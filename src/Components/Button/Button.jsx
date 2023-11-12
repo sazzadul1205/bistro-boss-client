@@ -1,7 +1,7 @@
 
 const Button = () => {
     return (
-        <div>
+        <div >
             <button className="btn btn-outline border-0 border-b-4 mt-4 text-[#BB8506]"> Order Now</button>
         </div>
     );

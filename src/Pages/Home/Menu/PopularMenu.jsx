@@ -1,18 +1,11 @@
-import { useEffect, useState } from 'react';
 import SharedTitle from '../../../Components/SharedTitle/SharedTitle'
 import MenuItem from '../../../Components/MenuItem/MenuItem';
+import useMenu from '../../../Hooks/useMenu';
 
 const PopularMenu = () => {
-    const [menu, setMenu] = useState([]);
+    const [menu] = useMenu();
+    const popular = menu.filter(item => item.category === 'popular')
 
-    useEffect(() => {
-        fetch('menu.json')
-            .then(res => res.json())
-            .then(data => {
-                const popularItems = data.filter(item => item.category === 'popular')
-                setMenu(popularItems)
-            })
-    }, [])
     return (
         <section className='mb-5'>
             <SharedTitle
@@ -21,7 +14,7 @@ const PopularMenu = () => {
             ></SharedTitle>
             <div className='grid grid-cols-2'>
                 {
-                    menu.map(item => <MenuItem key={item._id} item={item}></MenuItem>)
+                    popular.map(item => <MenuItem key={item._id} item={item}></MenuItem>)
                 }
             </div>
             <div className="flex justify-center">
