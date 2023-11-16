@@ -1,16 +1,18 @@
 import { createContext, useEffect, useState } from "react";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { app } from "../Firebase/firebase.config";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 
 
 export const AuthContext = createContext(null)
-const googleProvider = new GoogleAuthProvider()
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(true);
     const auth = getAuth(app)
+    const googleProvider = new GoogleAuthProvider()
+    const axiosPublic = useAxiosPublic();
 
     const createUser = (email, password) => {
         setLoading(true);
@@ -32,7 +34,7 @@ const AuthProvider = ({ children }) => {
         return signOut(auth);
     }
 
-    const signInWithGoogle = () => {
+    const googleSignIn = () => {
         setLoading(true)
         return signInWithPopup(auth, googleProvider)
     }
@@ -40,7 +42,19 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
-            console.log('current user', currentUser);
+            if (currentUser) {
+                // get token abd store client
+                const userInfo = { email: currentUser.email };
+                axiosPublic.post('/jwt', userInfo)
+                    .then(res => {
+                        if (res.data.token) {
+                            localStorage.setItem('access-token', res.data.token)
+                        }
+                    })
+            }
+            else {
+                localStorage.removeItem('access-token');
+            }
             setLoading(false)
         })
         return () => {
@@ -56,7 +70,7 @@ const AuthProvider = ({ children }) => {
         updateUser,
         singIn,
         logOut,
-        signInWithGoogle
+        googleSignIn,
 
     }
 

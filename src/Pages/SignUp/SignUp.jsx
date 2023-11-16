@@ -1,16 +1,18 @@
-import { Link, useLocation, useNavigate, } from "react-router-dom";
+import { Link, useNavigate, } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { Helmet } from "react-helmet-async";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import SocialLogin from "../../Components/SocialLogin/SocialLogin";
 
 
 const SignUp = () => {
+    const axiosPublic = useAxiosPublic()
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const { createUser, updateUser } = useContext(AuthContext)
     const navigate = useNavigate()
-    const location = useLocation()
 
     const onSubmit = (data) => {
         console.log(data)
@@ -19,15 +21,31 @@ const SignUp = () => {
                 const user = res.user
                 console.log(user);
                 updateUser(data.name, data.photoURL)
-                    .then( () =>{
-                        console.log('user profile photo updated');showSuccessAlert();
-                        reset();
-                        navigate('/');
+                    .then(() => {
+                        // create user entry in database
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email,
+
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user added to database');
+                                    showSuccessAlert();
+                                    reset();
+                                    navigate('/');
+                                }
+                            })
+                            .catch(() => {
+                                error => console.log(error);
+                            })
+
                     })
-                    .catch(() =>{
+                    .catch(() => {
                         error => console.log(error);
                     })
-                
+
             })
 
     }
@@ -49,7 +67,7 @@ const SignUp = () => {
             <div className="hero min-h-screen bg-base-200">
                 <div className="hero-content flex-col md:flex-row-reverse">
                     <div className="text-center md:w-1/2 lg:text-left">
-                        <h1 className="text-5xl font-bold">Login now!</h1>
+                        <h1 className="text-5xl font-bold">Sign Up now!</h1>
                         <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
                     </div>
                     <div className="card md:w-1/2 max-w-sm shadow-2xl bg-base-100">
@@ -138,8 +156,13 @@ const SignUp = () => {
                                 <h1 className='font-normal text-sm mt-2'>Don`t Have an account? <span className='text-[#FF3811]'><Link to={'/login'}>Log In</Link></span></h1>
                             </div>
                         </form>
+                        <div className="mx-auto">
+                            <SocialLogin></SocialLogin>
+                        </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
     );

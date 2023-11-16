@@ -71,7 +71,6 @@ const Cart = () => {
                             </tr>
                         </thead>
                         <tbody>
-
                             {/* row 1 */}
                             {
                                 cart.map((item, index) => (

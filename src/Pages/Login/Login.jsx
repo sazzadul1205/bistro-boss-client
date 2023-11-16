@@ -4,6 +4,7 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 import { AuthContext } from '../../providers/AuthProvider';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import SocialLogin from '../../Components/SocialLogin/SocialLogin';
 
 const Login = () => {
     const [disabled, setDisabled] = useState(true);
@@ -29,7 +30,7 @@ const Login = () => {
                 const user = res.user
                 console.log(user);
                 showSuccessLogInAlert();
-                navigate(from, {replace: true})
+                navigate(from, { replace: true })
             })
 
 
@@ -130,6 +131,9 @@ const Login = () => {
                                 <h1 className='font-normal text-sm mt-2'>Already Have an account? <span className='text-[#FF3811]'><Link to={'/signUp'}>Sign Up</Link></span></h1>
                             </div>
                         </form>
+                        <div className="mx-auto">
+                            <SocialLogin></SocialLogin>
+                        </div>
                     </div>
                 </div>
             </div>
