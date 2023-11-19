@@ -50,9 +50,9 @@ const Dashboard = () => {
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to={'/dashboard/allUsers'}>
+                                    <NavLink to={'/dashboard/paymentHistory'}>
                                         <FaUsers></FaUsers>
-                                        ALL USERS
+                                        PaymentHistory
                                     </NavLink>
                                 </li>
 
