@@ -86,17 +86,6 @@ const SignUp = () => {
                             </div>
                             <div className="form-control">
                                 <label className="label">
-                                    <span className="label-text">Photo URL</span>
-                                </label>
-                                <input
-                                    type="url"
-                                    {...register("photoURL", { required: true })}
-                                    placeholder="Photo URL"
-                                    className="input input-bordered" />
-                                {errors.photoURL && <span className="text-red-600">TPhoto URL is required</span>}
-                            </div>
-                            <div className="form-control">
-                                <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
                                 <input
@@ -106,6 +95,17 @@ const SignUp = () => {
                                     placeholder="email"
                                     className="input input-bordered" />
                                 {errors.email && <span className="text-red-600">This field is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Photo URL</span>
+                                </label>
+                                <input
+                                    type="url"
+                                    {...register("photoURL", { required: true })}
+                                    placeholder="Photo URL"
+                                    className="input input-bordered" />
+                                {errors.photoURL && <span className="text-red-600">TPhoto URL is required</span>}
                             </div>
                             <div className="form-control">
                                 <label className="label">

@@ -90,9 +90,9 @@ const Dashboard = () => {
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to={'/dashboard/booking'}>
+                                    <NavLink to={'/dashboard/paymentHistory'}>
                                         <AiOutlineUnorderedList></AiOutlineUnorderedList>
-                                        MY BOOKING
+                                        PaymentHistory
                                     </NavLink>
                                 </li>
                             </>
